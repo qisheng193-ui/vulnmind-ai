@@ -1,0 +1,7 @@
+{
+  "id": "vulnmind-ai-secure-code-review-agent",
+  "name": "VulnMind AI Secure Code Review Agent",
+  "description": "AI-assisted secure code review agent for source repositories.",
+  "type": "agent",
+  "version": "0.1.0"
+}
