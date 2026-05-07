@@ -1,0 +1,111 @@
+# VulnMind AI
+
+VulnMind AI 是一个面向源码仓库的安全审计 Agent 项目示例。它保留了多 Agent 的结构化设计，同时把功能定位在更适合正式提交和平台审核的“安全代码审计、风险分级、修复建议生成”场景，而不是攻击执行。
+
+## 项目定位
+
+- `ReconAgent`：遍历代码仓库，识别高风险调用点
+- `TriageAgent`：根据规则和上下文做严重级别与置信度判断
+- `GuidanceAgent`：生成验证建议与修复建议
+- `ReportAgent`：输出文本、Markdown、JSON 报告
+
+适合包装成：
+
+- AI 安全审计助手
+- 研发代码风险巡检 Agent
+- 面向企业内部代码仓的安全左移工具
+
+## 目录结构
+
+```text
+vulnmind_agent/
+├─ pyproject.toml
+├─ README.md
+├─ src/
+│  └─ vulnmind_ai/
+│     ├─ __init__.py
+│     ├─ __main__.py
+│     ├─ agents.py
+│     ├─ cli.py
+│     ├─ models.py
+│     └─ rules.py
+├─ tests/
+│  └─ test_scan.py
+├─ scripts/
+│  ├─ build_submission.py
+│  └─ generate_icon.py
+└─ xiaomi_submission/
+   ├─ store_metadata.md
+   ├─ demo_script.md
+   ├─ submission_checklist.md
+   └─ workspace_template/
+      ├─ config.json
+      ├─ README.md
+      ├─ Profile/
+      │  └─ profile.md
+      ├─ Prompt/
+      │  └─ system_prompt.md
+      └─ Skill/
+         └─ secure_code_review.md
+```
+
+## 快速开始
+
+```bash
+cd vulnmind_agent
+python -m pip install -e .
+python -m vulnmind_ai "D:\path\to\target" --output-dir reports
+```
+
+输出文件默认包括：
+
+- `vulnmind_report.txt`
+- `vulnmind_report.md`
+- `vulnmind_report.json`
+
+## 命令行示例
+
+```bash
+python -m vulnmind_ai "D:\repo" --extensions .php .py .js
+python -m vulnmind_ai "D:\repo" --formats text markdown
+python -m vulnmind_ai "D:\repo" --output-dir reports\demo
+```
+
+## 面向小米 Agent 的包装建议
+
+为了更容易通过审核，建议在对外描述中使用下面这套定位：
+
+- 产品名称：`VulnMind AI Secure Code Review Agent`
+- 核心能力：源码扫描、风险归类、审计报告、修复建议
+- 目标用户：开发者、安全工程师、企业研发团队
+- 典型场景：代码上线前巡检、外包代码验收、历史仓库体检
+
+不建议在对外材料里强调：
+
+- 自动攻击
+- 漏洞利用
+- 绕过生成
+- RCE payload 生成
+
+## 打包
+
+生成提交材料：
+
+```bash
+cd vulnmind_agent
+python scripts/generate_icon.py
+python scripts/build_submission.py
+```
+
+产物会放到 `dist/` 目录下。
+
+运行基础验证：
+
+```bash
+python -m unittest discover -s tests -p "test_*.py"
+```
+
+## 说明
+
+- `xiaomi_submission/workspace_template` 是便于你整理材料的模板目录，不保证与小米平台最终导出的 ZIP 字段完全一致。
+- 真正上传前，建议先在小米平台创建一个空白 Agent，再下载官方示例包，对照替换其中内容。
